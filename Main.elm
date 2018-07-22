@@ -1,6 +1,7 @@
 module Main exposing (main)
 
-import Character
+import Character.Initial as Character
+import Character.Character as Character
 import Html exposing (..)
 
 
@@ -15,7 +16,7 @@ main =
 
 
 type alias Model =
-    { activeCharacter : Character.CharacterName
+    { activeCharacter : Character.Name
     }
 
 
