@@ -32,8 +32,14 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ text "New Html Program" ]
+    let
+        characterSpeed =
+            model.activeCharacter
+                |> Character.getCharacterSpeed
+                |> toString
+    in
+        div []
+            [ text characterSpeed ]
 
 
 subscriptions : Model -> Sub Msg

@@ -1,4 +1,4 @@
-module Character exposing (CharacterName(..))
+module Character exposing (CharacterName(..), getCharacterSpeed)
 
 import Die exposing (Die)
 
@@ -47,14 +47,19 @@ getMovementBonus characterBonus =
 
 getCharacterSpeed : CharacterName -> Int
 getCharacterSpeed characterName =
+    characterName
+        |> getCharacterBonuses
+        |> List.map getMovementBonus
+        |> List.foldl (+) 0
+
+
+getCharacterBonuses : CharacterName -> List Bonus
+getCharacterBonuses characterName =
     let
         character =
             initialCharacterStats characterName
-
-        movementBonus =
-            getMovementBonus character.bonus
     in
-        movementBonus
+        character.bonuses
 
 
 initialCharacterStats : CharacterName -> InitialCharacterStats
@@ -68,7 +73,7 @@ initialCharacterStats characterName =
             , holinessDie = { green = 0, blue = 0, red = 0 }
             , characterType = Pariah
             , classes = [ Cleric ]
-            , bonus = MovementModifier -3
+            , bonuses = [ MovementModifier -3 ]
             }
 
 
@@ -80,5 +85,5 @@ type alias InitialCharacterStats =
     , holinessDie : Die
     , characterType : Type
     , classes : List Class
-    , bonus : Bonus
+    , bonuses : List Bonus
     }
