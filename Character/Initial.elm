@@ -1,7 +1,6 @@
 module Character.Initial
     exposing
         ( Name(..)
-        , create
         , getHealth
         , getBonuses
         )

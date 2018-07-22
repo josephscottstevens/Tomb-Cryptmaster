@@ -1,21 +1,16 @@
 module Character.Character exposing (getCharacterSpeed)
 
-import Die exposing (Die)
 import Character.Bonus exposing (Bonus(..))
-import Character.Initial exposing (Name, getBonuses)
+import Character.Initial as Character
+import Cards.Treasure exposing (Treasure(..))
+import Cards.Curse exposing (Curse(..))
 
 
---getCharacterMovementModifier : Special -> List GlobalEffect -> List ActiveSpell -> List Equipment -> Int
---getCharacterHealth : List CharacterBonus -> List Wound -> StartingHealth -> Int
---getCharacterHealth partyMembers
+-- Speed
 
 
-type Wound
-    = Int
-
-
-getMovementBonus : Bonus -> Int
-getMovementBonus characterBonus =
+getMovementBonusHelper : Bonus -> Int
+getMovementBonusHelper characterBonus =
     case characterBonus of
         MovementModifier modifier ->
             modifier
@@ -24,9 +19,17 @@ getMovementBonus characterBonus =
             0
 
 
-getCharacterSpeed : Name -> Int
-getCharacterSpeed name =
-    name
-        |> getBonuses
-        |> List.map getMovementBonus
-        |> List.foldl (+) 0
+type DiceRolledResult
+    = DiceRolledResult --"todo"
+
+
+getCharacterSpeed : Character.Name -> List Treasure -> List Curse -> Int
+getCharacterSpeed name treasures curses =
+    let
+        movementBonus =
+            name
+                |> Character.getBonuses
+                |> List.map getMovementBonusHelper
+                |> List.foldl (+) 0
+    in
+        movementBonus
